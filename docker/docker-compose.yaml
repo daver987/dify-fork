@@ -5,41 +5,38 @@ services:
     image: langgenius/dify-api:0.6.6
     restart: always
     environment:
-      # Startup mode, 'api' starts the API server.
       MODE: api
-      # The log level for the application. Supported values are `DEBUG`, `INFO`, `WARNING`, `ERROR`, `CRITICAL`
       LOG_LEVEL: INFO
-      # A secret key that is used for securely signing the session cookie and encrypting sensitive information on the database. You can generate a strong key using `openssl rand -base64 42`.
       SECRET_KEY: sk-9f73s3ljTXVcMT3Blb3ljTqtsKiGHXVcMT3BlbkFJLK7U
       # The base URL of console application web frontend, refers to the Console base URL of WEB service if console domain is
       # different from api or web app domain.
       # example: http://cloud.dify.ai
-      CONSOLE_WEB_URL: ''
+      CONSOLE_WEB_URL: ${CONSOLE_WEB_URL}
       # Password for admin user initialization.
       # If left unset, admin user will not be prompted for a password when creating the initial admin account.
-      INIT_PASSWORD: ''
+      INIT_PASSWORD: ${INIT_PASSWORD}
       # The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
       # different from api or web app domain.
       # example: http://cloud.dify.ai
-      CONSOLE_API_URL: ''
+      CONSOLE_API_URL: ${CONSOLE_API_URL}
       # The URL prefix for Service API endpoints, refers to the base URL of the current API service if api domain is
       # different from console domain.
       # example: http://api.dify.ai
-      SERVICE_API_URL: ''
+      SERVICE_API_URL: ${SERVICE_API_URL}
       # The URL prefix for Web APP frontend, refers to the Web App base URL of WEB service if web app domain is different from
       # console or api domain.
       # example: http://udify.app
-      APP_WEB_URL: ''
+      APP_WEB_URL: ${APP_WEB_URL}
       # File preview or download Url prefix.
       # used to display File preview or download Url to the front-end or as Multi-model inputs;
       # Url is signed and has expiration time.
-      FILES_URL: ''
+      FILES_URL: ${FILES_URL}
       # When enabled, migrations will be executed prior to application startup and the application will start after the migrations have completed.
       MIGRATION_ENABLED: 'true'
       # The configurations of postgres database connection.
       # It is consistent with the configuration in the 'db' service below.
       DB_USERNAME: postgres
-      DB_PASSWORD: difyai123456
+      DB_PASSWORD: postgres
       DB_HOST: db
       DB_PORT: 5432
       DB_DATABASE: dify
@@ -47,8 +44,8 @@ services:
       # It is consistent with the configuration in the 'redis' service below.
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      REDIS_USERNAME: ''
-      REDIS_PASSWORD: difyai123456
+      REDIS_USERNAME: ${REDIS_USERNAME}
+      REDIS_PASSWORD: redis
       REDIS_USE_SSL: 'false'
       # use redis db 0 for redis cache
       REDIS_DB: 0
@@ -86,7 +83,7 @@ services:
       AZURE_BLOB_ACCOUNT_KEY: 'difyai'
       AZURE_BLOB_CONTAINER_NAME: 'difyai-container'
       AZURE_BLOB_ACCOUNT_URL: 'https://<your_account_name>.blob.core.windows.net'
-      # The Google storage configurations, only available when STORAGE_TYPE is `google-storage`.
+      # The Google storage configurations, only available when STORAGE_TYPE are `google-storage`.
       GOOGLE_STORAGE_BUCKET_NAME: 'yout-bucket-name'
       GOOGLE_STORAGE_SERVICE_ACCOUNT_JSON_BASE64: 'your-google-service-account-json-base64-string'
       # The type of vector store to use. Supported values are `weaviate`, `qdrant`, `milvus`, `relyt`.
@@ -123,19 +120,19 @@ services:
       RELYT_PASSWORD: difyai123456
       RELYT_DATABASE: postgres
       # Mail configuration, support: resend, smtp
-      MAIL_TYPE: ''
+      MAIL_TYPE: ${}
       # default send from email address, if not specified
       MAIL_DEFAULT_SEND_FROM: 'YOUR EMAIL FROM (eg: no-reply <no-reply@dify.ai>)'
-      SMTP_SERVER: ''
+      SMTP_SERVER: ${}
       SMTP_PORT: 587
-      SMTP_USERNAME: ''
-      SMTP_PASSWORD: ''
+      SMTP_USERNAME: ${}
+      SMTP_PASSWORD: ${}
       SMTP_USE_TLS: 'true'
       # the api-key for resend (https://resend.com)
-      RESEND_API_KEY: ''
+      RESEND_API_KEY: ${RESEND_API_KEY}
       RESEND_API_URL: https://api.resend.com
       # The DSN for Sentry error reporting. If not set, Sentry error reporting will be disabled.
-      SENTRY_DSN: ''
+      SENTRY_DSN: ${SENTRY_DSN}
       # The sample rate for Sentry events. Default: `1.0`
       SENTRY_TRACES_SAMPLE_RATE: 1.0
       # The sample rate for Sentry profiles. Default: `1.0`
@@ -184,14 +181,14 @@ services:
       # The configurations of postgres database connection.
       # It is consistent with the configuration in the 'db' service below.
       DB_USERNAME: postgres
-      DB_PASSWORD: difyai123456
+      DB_PASSWORD: postgres
       DB_HOST: db
       DB_PORT: 5432
       DB_DATABASE: dify
       # The configurations of redis cache connection.
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      REDIS_USERNAME: ''
+      REDIS_USERNAME: ${}
       REDIS_PASSWORD: difyai123456
       REDIS_DB: 0
       REDIS_USE_SSL: 'false'
@@ -221,7 +218,7 @@ services:
       QDRANT_URL: http://qdrant:6333
       # The Qdrant API key.
       QDRANT_API_KEY: difyai123456
-      # The Qdrant clinet timeout setting.
+      # The Qdrant client timeout setting.
       QDRANT_CLIENT_TIMEOUT: 20
       # The Qdrant client enable gRPC mode.
       QDRANT_GRPC_ENABLED: 'false'
@@ -239,11 +236,11 @@ services:
       # The milvus tls switch.
       MILVUS_SECURE: 'false'
       # Mail configuration, support: resend
-      MAIL_TYPE: ''
+      MAIL_TYPE: $MAIL_TYPE{}
       # default send from email address, if not specified
       MAIL_DEFAULT_SEND_FROM: 'YOUR EMAIL FROM (eg: no-reply <no-reply@dify.ai>)'
       # the api-key for resend (https://resend.com)
-      RESEND_API_KEY: ''
+      RESEND_API_KEY: ${RESEND_API_KEY}
       RESEND_API_URL: https://api.resend.com
       # relyt configurations
       RELYT_HOST: db
@@ -271,16 +268,16 @@ services:
       # The base URL of console application api server, refers to the Console base URL of WEB service if console domain is
       # different from api or web app domain.
       # example: http://cloud.dify.ai
-      CONSOLE_API_URL: ''
+      CONSOLE_API_URL: ${CONSOLE_API_URL}
       # The URL for Web APP api server, refers to the Web App base URL of WEB service if web app domain is different from
       # console or api domain.
       # example: http://udify.app
-      APP_API_URL: ''
+      APP_API_URL: ${APP_API_URL}
       # The DSN for Sentry error reporting. If not set, Sentry error reporting will be disabled.
-      SENTRY_DSN: ''
+      SENTRY_DSN: ${SENTRY_DSN}
     # uncomment to expose dify-web port to host
-    # ports:
-    #   - "3000:3000"
+    ports:
+     - "3000:3000"
 
   # The postgres database.
   db:
@@ -289,7 +286,7 @@ services:
     environment:
       PGUSER: postgres
       # The password for the default postgres user.
-      POSTGRES_PASSWORD: difyai123456
+      POSTGRES_PASSWORD: postgres
       # The name of the default postgres database.
       POSTGRES_DB: dify
       # postgres data directory
@@ -297,8 +294,8 @@ services:
     volumes:
       - ./volumes/db/data:/var/lib/postgresql/data
     # uncomment to expose db(postgresql) port to host
-    # ports:
-    #   - "5432:5432"
+    ports:
+       - "5432:5432"
     healthcheck:
       test: [ "CMD", "pg_isready" ]
       interval: 1s
@@ -317,8 +314,8 @@ services:
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
     # uncomment to expose redis port to host
-    # ports:
-    #   - "6379:6379"
+    ports:
+      - "6379:6379"
 
   # The Weaviate vector store.
   weaviate:
@@ -341,16 +338,16 @@ services:
       AUTHORIZATION_ADMINLIST_ENABLED: 'true'
       AUTHORIZATION_ADMINLIST_USERS: 'hello@dify.ai'
     # uncomment to expose weaviate port to host
-    # ports:
-    #  - "8080:8080"
+    ports:
+      - "8080:8080"
 
   # The DifySandbox
   sandbox:
     image: langgenius/dify-sandbox:0.1.0
     restart: always
     cap_add:
-    # Why is sys_admin permission needed?
-    # https://docs.dify.ai/getting-started/install-self-hosted/install-faq#id-16.-why-is-sys_admin-permission-needed
+      # Why is sys_admin permission needed?
+      # https://docs.dify.ai/getting-started/install-self-hosted/install-faq#id-16.-why-is-sys_admin-permission-needed
       - SYS_ADMIN
     environment:
       # The DifySandbox configurations
@@ -389,4 +386,4 @@ services:
       - web
     ports:
       - "80:80"
-      #- "443:443"
+      - "443:443"
